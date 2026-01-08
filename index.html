@@ -288,27 +288,65 @@
     
     const certificate = document.getElementById('certificate');
     
-    certificate.addEventListener('mousemove', (e) => {
+    // Function to apply 3D tilt effect
+    function applyTilt(x, y) {
       const rect = certificate.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      const relX = x - rect.left;
+      const relY = y - rect.top;
       
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
       
-      const rotateX = (y - centerY) / 20;
-      const rotateY = (centerX - x) / 20;
+      const rotateX = (relY - centerY) / 20;
+      const rotateY = (centerX - relX) / 20;
       
       certificate.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
+    }
+    
+    // Function to reset tilt
+    function resetTilt() {
+      certificate.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+    }
+    
+    // Mouse events for desktop
+    certificate.addEventListener('mousemove', (e) => {
+      applyTilt(e.clientX, e.clientY);
     });
     
     certificate.addEventListener('mouseleave', () => {
-      certificate.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+      resetTilt();
     });
     
     certificate.addEventListener('click', (e) => {
       createExplosion(e.clientX, e.clientY, 100);
     });
+    
+    // Touch events for mobile devices
+    certificate.addEventListener('touchstart', (e) => {
+      // Prevent page scrolling when touching the certificate
+      e.preventDefault();
+      const touch = e.touches[0];
+      applyTilt(touch.clientX, touch.clientY);
+    }, { passive: false });
+    
+    certificate.addEventListener('touchmove', (e) => {
+      // Prevent page scrolling when moving finger on the certificate
+      e.preventDefault();
+      const touch = e.touches[0];
+      applyTilt(touch.clientX, touch.clientY);
+    }, { passive: false });
+    
+    certificate.addEventListener('touchend', (e) => {
+      // Prevent default behavior and reset tilt
+      e.preventDefault();
+      resetTilt();
+      
+      // Create explosion at the last touch position
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const touch = e.changedTouches[0];
+        createExplosion(touch.clientX, touch.clientY, 100);
+      }
+    }, { passive: false });
     
     async function onConfigChange(config) {
       const recipientName = document.getElementById('recipient-name');
