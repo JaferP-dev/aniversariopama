@@ -1,1 +1,0 @@
-# aniversariopama.github.io
