@@ -148,6 +148,40 @@
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* --- ADICIONES: soporte táctil y ajustes móviles --- */
+    /* Evita el deslizamiento de la página cuando se toca el certificado */
+    .certificate-wrapper {
+      touch-action: none; /* bloquea gestos de scroll/pan sobre el elemento */
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Ajustes para pantallas pequeñas: reduce tipografías y tamaños para ganar espacio */
+    @media (max-width: 480px) {
+      .certificate {
+        transform-origin: center center;
+      }
+      #certificate-title {
+        font-size: 1.25rem; /* reduce título */
+      }
+      #recipient-name {
+        font-size: 2.2rem; /* reduce nombre en móvil */
+      }
+      .certificate .content,
+      #main-message {
+        font-size: 0.95rem;
+      }
+      /* Si usas imágenes o elementos grandes, escala el contenedor ligeramente */
+      .certificate {
+        max-width: 92vw;
+        max-height: 88vh;
+      }
+    }
+
+    /* Transición más suave al soltar */
+    .certificate.is-resetting {
+      transition: transform 400ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms ease-out;
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -159,14 +193,14 @@
     <div id="certificate" class="certificate relative rounded-lg overflow-hidden shadow-2xl">
      <div class="golden-border p-3">
       <div class="bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 p-8 md:p-12 relative overflow-hidden">
-       <svg class="ornament top-4 left-4 w-24 h-24" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#f9e077" /></svg>
-       <svg class="ornament top-4 right-4 w-24 h-24 rotate-90" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#f9e077" /></svg>
-       <svg class="ornament bottom-4 left-4 w-24 h-24 -rotate-90" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#f9e077" /></svg>
-       <svg class="ornament bottom-4 right-4 w-24 h-24 rotate-180" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#f9e077" /></svg>
+       <svg class="ornament top-4 left-4 w-24 h-24" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#d4af37" /></svg>
+       <svg class="ornament top-4 right-4 w-24 h-24 rotate-90" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#d4af37" /></svg>
+       <svg class="ornament bottom-4 left-4 w-24 h-24 -rotate-90" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#d4af37" /></svg>
+       <svg class="ornament bottom-4 right-4 w-24 h-24 rotate-180" viewbox="0 0 100 100"><path d="M0,0 Q50,20 50,50 Q20,50 0,0" fill="#d4af37" /><circle cx="15" cy="15" r="8" fill="#d4af37" /><circle cx="8" cy="8" r="4" fill="#d4af37" /></svg>
        <div class="ribbon"><span>2024</span></div>
        <div class="relative z-10 text-center">
         <div class="flex justify-center mb-4">
-         <svg width="200" height="30" viewbox="0 0 200 30"><path d="M0,15 Q50,0 100,15 Q150,30 200,15" stroke="#d4af37" stroke-width="2" fill="none" /><circle cx="100" cy="15" r="5" fill="#d4af37" /></svg>
+         <svg width="200" height="30" viewbox="0 0 200 30"><path d="M0,15 Q50,0 100,15 Q150,30 200,15" stroke="#d4af37" stroke-width="2" fill="none" /><circle cx="100" cy="15" r="5" fill="#d4af37"/></svg>
         </div>
         <h1 id="certificate-title" class="text-3xl md:text-4xl font-bold text-amber-900 mb-2 fade-in" style="font-family: 'Playfair Display', serif; animation-delay: 0.2s;">Certificado de Felicitación</h1>
         <p class="text-amber-700 text-lg mb-8 italic fade-in" style="font-family: 'Cormorant Garamond', serif; animation-delay: 0.4s;">Se otorga con orgullo a:</p>
@@ -187,7 +221,7 @@
          </div>
         </div>
         <div class="flex justify-center mt-8">
-         <svg width="150" height="25" viewbox="0 0 150 25"><path d="M0,12 Q37.5,25 75,12 Q112.5,0 150,12" stroke="#d4af37" stroke-width="2" fill="none" /><circle cx="75" cy="12" r="4" fill="#d4af37" /></svg>
+         <svg width="150" height="25" viewbox="0 0 150 25"><path d="M0,12 Q37.5,25 75,12 Q112.5,0 150,12" stroke="#d4af37" stroke-width="2" fill="none" /><circle cx="75" cy="12" r="4" fill="#d4af37"/></svg>
         </div>
        </div>
       </div>
@@ -197,206 +231,235 @@
    </div>
   </div>
   <script>
-    const defaultConfig = {
-      recipient_name: 'Javier y Zaida',
-      certificate_title: 'Certificado de Felicitación',
-      main_message: 'Por tu dedicación y esfuerzo incansable por conseguir un mejor futuro para ustedes y la familia durante el último año.',
-      from_text: 'Todo el equipo',
-      background_color: '#1a1a2e',
-      accent_color: '#d4af37',
-      text_color: '#78350f',
-      primary_action_color: '#c41e3a',
-      secondary_surface_color: '#fef3c7',
-      font_family: 'Playfair Display',
-      font_size: 16
-    };
+(function(){
+  const defaultConfig = {
+    recipient_name: 'Javier y Zaida',
+    certificate_title: 'Certificado de Felicitación',
+    main_message: 'Por tu dedicación y esfuerzo incansable por conseguir un mejor futuro para ustedes y la familia durante el último año.',
+    from_text: 'Todo el equipo',
+    background_color: '#1a1a2e',
+    accent_color: '#d4af37',
+    text_color: '#78350f',
+    primary_action_color: '#c41e3a',
+    secondary_surface_color: '#fef3c7',
+    font_family: 'Playfair Display',
+    font_size: 16
+  };
 
-    const confettiColors = ['#d4af37', '#c41e3a', '#f9e077', '#8b0000', '#fbbf24', '#f59e0b', '#ef4444', '#22c55e', '#3b82f6', '#a855f7'];
-    const confettiShapes = ['square', 'circle', 'triangle', 'star'];
-    
-    function createConfetti(x, y, isExplosion = false) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      
-      const color = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-      const shape = confettiShapes[Math.floor(Math.random() * confettiShapes.length)];
-      const size = Math.random() * 10 + 6;
-      
-      confetti.style.width = size + 'px';
-      confetti.style.height = size + 'px';
-      confetti.style.left = x + 'px';
-      confetti.style.top = y + 'px';
-      confetti.style.backgroundColor = color;
-      
-      if (shape === 'circle') {
-        confetti.style.borderRadius = '50%';
-      } else if (shape === 'triangle') {
-        confetti.style.backgroundColor = 'transparent';
-        confetti.style.borderLeft = size/2 + 'px solid transparent';
-        confetti.style.borderRight = size/2 + 'px solid transparent';
-        confetti.style.borderBottom = size + 'px solid ' + color;
-      } else if (shape === 'star') {
-        confetti.style.backgroundColor = 'transparent';
-        confetti.innerHTML = '<svg width="' + size + '" height="' + size + '" viewBox="0 0 24 24" fill="' + color + '"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
-      }
-      
-      if (isExplosion) {
-        const angle = Math.random() * Math.PI * 2;
-        const velocity = Math.random() * 200 + 100;
-        const tx = Math.cos(angle) * velocity;
-        const ty = Math.sin(angle) * velocity - 100;
-        
-        confetti.style.setProperty('--tx', tx + 'px');
-        confetti.style.setProperty('--ty', ty + 'px');
-        confetti.classList.add('confetti-explosion');
-        confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      } else {
-        confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-      }
-      
-      document.getElementById('confetti-container').appendChild(confetti);
-      
-      setTimeout(() => confetti.remove(), 4000);
+  const confettiColors = ['#d4af37', '#c41e3a', '#f9e077', '#8b0000', '#fbbf24', '#f59e0b', '#ef4444', '#22c55e', '#3b82f6', '#a855f7'];
+  const confettiShapes = ['square','circle','triangle','star'];
+
+  function createConfetti(x,y,isExplosion=false){
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    const color = confettiColors[Math.floor(Math.random()*confettiColors.length)];
+    const shape = confettiShapes[Math.floor(Math.random()*confettiShapes.length)];
+    const size = Math.random()*10 + 6;
+
+    confetti.style.width = size + 'px';
+    confetti.style.height = size + 'px';
+    confetti.style.left = x + 'px';
+    confetti.style.top = y + 'px';
+    confetti.style.backgroundColor = color;
+
+    if(shape === 'circle') confetti.style.borderRadius = '50%';
+    else if(shape === 'triangle'){
+      confetti.style.backgroundColor = 'transparent';
+      confetti.style.borderLeft = size/2 + 'px solid transparent';
+      confetti.style.borderRight = size/2 + 'px solid transparent';
+      confetti.style.borderBottom = size + 'px solid ' + color;
+    } else if(shape === 'star'){
+      confetti.style.backgroundColor = 'transparent';
+      confetti.innerHTML = '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="'+color+'"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>';
     }
-    
-    function createExplosion(x, y, count = 50) {
-      for (let i = 0; i < count; i++) {
-        setTimeout(() => createConfetti(x, y, true), i * 10);
-      }
+
+    if(isExplosion){
+      const angle = Math.random()*Math.PI*2;
+      const velocity = Math.random()*200 + 100;
+      const tx = Math.cos(angle)*velocity;
+      const ty = Math.sin(angle)*velocity - 100;
+      confetti.style.setProperty('--tx', tx + 'px');
+      confetti.style.setProperty('--ty', ty + 'px');
+      confetti.classList.add('confetti-explosion');
+      confetti.style.animationDuration = (Math.random()*2 + 2) + 's';
+    } else {
+      confetti.style.animationDuration = (Math.random()*3 + 2) + 's';
     }
-    
-    function startConfettiRain() {
-      setInterval(() => {
-        const x = Math.random() * window.innerWidth;
-        createConfetti(x, -20, false);
-      }, 100);
-    }
-    
-    function initialExplosions() {
-      const positions = [
-        { x: window.innerWidth * 0.2, y: window.innerHeight * 0.3 },
-        { x: window.innerWidth * 0.8, y: window.innerHeight * 0.3 },
-        { x: window.innerWidth * 0.5, y: window.innerHeight * 0.2 },
-        { x: window.innerWidth * 0.3, y: window.innerHeight * 0.6 },
-        { x: window.innerWidth * 0.7, y: window.innerHeight * 0.6 }
-      ];
-      
-      positions.forEach((pos, i) => {
-        setTimeout(() => createExplosion(pos.x, pos.y, 80), i * 300);
-      });
-    }
-    
-    const certificate = document.getElementById('certificate');
-    
-    certificate.addEventListener('mousemove', (e) => {
-      const rect = certificate.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      const rotateX = (y - centerY) / 20;
-      const rotateY = (centerX - x) / 20;
-      
-      certificate.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) scale(1.02)';
-    });
-    
-    certificate.addEventListener('mouseleave', () => {
-      certificate.style.transform = 'rotateX(0) rotateY(0) scale(1)';
-    });
-    
-    certificate.addEventListener('click', (e) => {
-      createExplosion(e.clientX, e.clientY, 100);
-    });
-    
-    async function onConfigChange(config) {
-      const recipientName = document.getElementById('recipient-name');
-      const certificateTitle = document.getElementById('certificate-title');
-      const mainMessage = document.getElementById('main-message');
-      const fromText = document.getElementById('from-text');
-      
-      if (recipientName) recipientName.textContent = config.recipient_name || defaultConfig.recipient_name;
-      if (certificateTitle) certificateTitle.textContent = config.certificate_title || defaultConfig.certificate_title;
-      if (mainMessage) mainMessage.textContent = config.main_message || defaultConfig.main_message;
-      if (fromText) fromText.textContent = config.from_text || defaultConfig.from_text;
-      
-      const fontFamily = config.font_family || defaultConfig.font_family;
-      document.querySelectorAll('[style*="font-family"]').forEach(el => {
-        const currentFont = el.style.fontFamily;
-        if (currentFont.includes('Playfair')) {
-          el.style.fontFamily = fontFamily + ", 'Playfair Display', serif";
-        }
-      });
-      
-      const bgColor = config.background_color || defaultConfig.background_color;
-      document.body.style.background = 'linear-gradient(135deg, ' + bgColor + ' 0%, ' + adjustColor(bgColor, 20) + ' 50%, ' + adjustColor(bgColor, 40) + ' 100%)';
-    }
-    
-    function adjustColor(hex, amount) {
-      const num = parseInt(hex.replace('#', ''), 16);
-      const r = Math.min(255, Math.max(0, (num >> 16) + amount));
-      const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-      const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
-      return '#' + (1 << 24 | r << 16 | g << 8 | b).toString(16).slice(1);
-    }
-    
-    function mapToCapabilities(config) {
-      return {
-        recolorables: [
-          {
-            get: () => config.background_color || defaultConfig.background_color,
-            set: (value) => { config.background_color = value; window.elementSdk.setConfig({ background_color: value }); }
-          },
-          {
-            get: () => config.secondary_surface_color || defaultConfig.secondary_surface_color,
-            set: (value) => { config.secondary_surface_color = value; window.elementSdk.setConfig({ secondary_surface_color: value }); }
-          },
-          {
-            get: () => config.text_color || defaultConfig.text_color,
-            set: (value) => { config.text_color = value; window.elementSdk.setConfig({ text_color: value }); }
-          },
-          {
-            get: () => config.accent_color || defaultConfig.accent_color,
-            set: (value) => { config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); }
-          },
-          {
-            get: () => config.primary_action_color || defaultConfig.primary_action_color,
-            set: (value) => { config.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); }
-          }
-        ],
-        borderables: [],
-        fontEditable: {
-          get: () => config.font_family || defaultConfig.font_family,
-          set: (value) => { config.font_family = value; window.elementSdk.setConfig({ font_family: value }); }
-        },
-        fontSizeable: {
-          get: () => config.font_size || defaultConfig.font_size,
-          set: (value) => { config.font_size = value; window.elementSdk.setConfig({ font_size: value }); }
-        }
-      };
-    }
-    
-    function mapToEditPanelValues(config) {
-      return new Map([
-        ['recipient_name', config.recipient_name || defaultConfig.recipient_name],
-        ['certificate_title', config.certificate_title || defaultConfig.certificate_title],
-        ['main_message', config.main_message || defaultConfig.main_message],
-        ['from_text', config.from_text || defaultConfig.from_text]
-      ]);
-    }
-    
-    if (window.elementSdk) {
-      window.elementSdk.init({
-        defaultConfig,
-        onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
-      });
-    }
-    
+
+    document.getElementById('confetti-container').appendChild(confetti);
+    setTimeout(()=>confetti.remove(), 4000);
+  }
+
+  function createExplosion(x,y,count=50){
+    for(let i=0;i<count;i++) setTimeout(()=>createConfetti(x,y,true), i*10);
+  }
+
+  function startConfettiRain(){
+    setInterval(()=>{ const x = Math.random()*window.innerWidth; createConfetti(x,-20,false); }, 100);
+  }
+
+  function initialExplosions(){
+    const positions = [
+      { x: window.innerWidth*0.2, y: window.innerHeight*0.3 },
+      { x: window.innerWidth*0.8, y: window.innerHeight*0.3 },
+      { x: window.innerWidth*0.5, y: window.innerHeight*0.2 },
+      { x: window.innerWidth*0.3, y: window.innerHeight*0.6 },
+      { x: window.innerWidth*0.7, y: window.innerHeight*0.6 }
+    ];
+    positions.forEach((pos,i)=> setTimeout(()=>createExplosion(pos.x,pos.y,80), i*300));
+  }
+
+  // --- Nuevo sistema de transformaciones (mouse + touch) ---
+  const wrapper = document.querySelector('.certificate-wrapper');
+  const certificate = document.getElementById('certificate');
+  if(!wrapper || !certificate){
+    // fallback: iniciar confetti y exit
     setTimeout(initialExplosions, 500);
     setTimeout(startConfettiRain, 2000);
+    return;
+  }
+
+  const maxTilt = 12; // grados
+  const scaleOnInteract = 1.02;
+  let targetRotateX = 0, targetRotateY = 0, isInteracting = false, rafId = null;
+
+  function applyTransform(){
+    certificate.style.transform = `perspective(1000px) rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg) scale(${isInteracting ? scaleOnInteract : 1})`;
+    rafId = null;
+  }
+
+  function scheduleUpdate(){ if(!rafId) rafId = requestAnimationFrame(applyTransform); }
+
+  function setFromPoint(clientX, clientY){
+    const rect = wrapper.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    const dx = (clientX - cx) / (rect.width/2); // -1 .. 1
+    const dy = (clientY - cy) / (rect.height/2);
+    targetRotateY = dx * maxTilt; // rotY según X
+    targetRotateX = -dy * maxTilt; // rotX inversa según Y
+    scheduleUpdate();
+  }
+
+  // Mouse handlers (desktop)
+  wrapper.addEventListener('mousemove', (e)=>{
+    isInteracting = true;
+    setFromPoint(e.clientX, e.clientY);
+  }, { passive: true });
+
+  wrapper.addEventListener('mouseleave', ()=>{
+    isInteracting = false;
+    targetRotateX = 0;
+    targetRotateY = 0;
+    certificate.classList.add('is-resetting');
+    scheduleUpdate();
+    setTimeout(()=>certificate.classList.remove('is-resetting'), 450);
+  }, { passive: true });
+
+  // Touch handlers (mobile)
+  function onTouchStart(e){
+    if(e.touches && e.touches.length > 1) return;
+    isInteracting = true;
+    certificate.classList.remove('is-resetting');
+    // evitar scroll mientras interactúa
+    document.body.style.overflow = 'hidden';
+    handleTouchMove(e);
+  }
+
+  function handleTouchMove(e){
+    if(!isInteracting) return;
+    if(e.touches && e.touches.length > 1) return;
+    if(e.cancelable) e.preventDefault();
+    const touch = (e.touches && e.touches[0]) || e;
+    setFromPoint(touch.clientX, touch.clientY);
+  }
+
+  function onTouchEnd(){
+    if(!isInteracting) return;
+    isInteracting = false;
+    document.body.style.overflow = '';
+    certificate.classList.add('is-resetting');
+    targetRotateX = 0; targetRotateY = 0;
+    scheduleUpdate();
+    setTimeout(()=>certificate.classList.remove('is-resetting'), 450);
+  }
+
+  wrapper.addEventListener('touchstart', onTouchStart, { passive: true });
+  wrapper.addEventListener('touchmove', handleTouchMove, { passive: false });
+  wrapper.addEventListener('touchend', onTouchEnd, { passive: true });
+  wrapper.addEventListener('touchcancel', onTouchEnd, { passive: true });
+
+  // Pointer events fallback
+  if(window.PointerEvent){
+    wrapper.addEventListener('pointerdown', (e)=>{ if(e.pointerType === 'touch') onTouchStart({ touches: [{ clientX: e.clientX, clientY: e.clientY }], cancelable: false }); }, { passive: true });
+    wrapper.addEventListener('pointermove', (e)=>{ if(e.pointerType === 'touch' && isInteracting) handleTouchMove({ touches: [{ clientX: e.clientX, clientY: e.clientY }], cancelable: false, preventDefault: ()=>{} }); }, { passive: true });
+    wrapper.addEventListener('pointerup', (e)=>{ if(e.pointerType === 'touch') onTouchEnd(); }, { passive: true });
+  }
+
+  // Click sigue generando explosión
+  certificate.addEventListener('click', (e)=>{ createExplosion(e.clientX, e.clientY, 100); });
+
+  // Resto de funciones de configuración y SDK (sin cambios)
+  async function onConfigChange(config){
+    const recipientName = document.getElementById('recipient-name');
+    const certificateTitle = document.getElementById('certificate-title');
+    const mainMessage = document.getElementById('main-message');
+    const fromText = document.getElementById('from-text');
+
+    if(recipientName) recipientName.textContent = config.recipient_name || defaultConfig.recipient_name;
+    if(certificateTitle) certificateTitle.textContent = config.certificate_title || defaultConfig.certificate_title;
+    if(mainMessage) mainMessage.textContent = config.main_message || defaultConfig.main_message;
+    if(fromText) fromText.textContent = config.from_text || defaultConfig.from_text;
+
+    const fontFamily = config.font_family || defaultConfig.font_family;
+    document.querySelectorAll('[style*="font-family"]').forEach(el=>{
+      const currentFont = el.style.fontFamily;
+      if(currentFont.includes('Playfair')) el.style.fontFamily = fontFamily + ", 'Playfair Display', serif";
+    });
+
+    const bgColor = config.background_color || defaultConfig.background_color;
+    document.body.style.background = 'linear-gradient(135deg, ' + bgColor + ' 0%, ' + adjustColor(bgColor,20) + ' 50%, ' + adjustColor(bgColor,40) + ' 100%)';
+  }
+
+  function adjustColor(hex, amount){
+    const num = parseInt(hex.replace('#',''),16);
+    const r = Math.min(255, Math.max(0, (num >> 16) + amount));
+    const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
+    const b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
+    return '#' + (1<<24 | r<<16 | g<<8 | b).toString(16).slice(1);
+  }
+
+  function mapToCapabilities(config){
+    return {
+      recolorables: [
+        { get: ()=> config.background_color || defaultConfig.background_color, set: (value)=>{ config.background_color = value; window.elementSdk.setConfig({ background_color: value }); } },
+        { get: ()=> config.secondary_surface_color || defaultConfig.secondary_surface_color, set: (value)=>{ config.secondary_surface_color = value; window.elementSdk.setConfig({ secondary_surface_color: value }); } },
+        { get: ()=> config.text_color || defaultConfig.text_color, set: (value)=>{ config.text_color = value; window.elementSdk.setConfig({ text_color: value }); } },
+        { get: ()=> config.accent_color || defaultConfig.accent_color, set: (value)=>{ config.accent_color = value; window.elementSdk.setConfig({ accent_color: value }); } },
+        { get: ()=> config.primary_action_color || defaultConfig.primary_action_color, set: (value)=>{ config.primary_action_color = value; window.elementSdk.setConfig({ primary_action_color: value }); } }
+      ],
+      borderables: [],
+      fontEditable: { get: ()=> config.font_family || defaultConfig.font_family, set: (value)=>{ config.font_family = value; window.elementSdk.setConfig({ font_family: value }); } },
+      fontSizeable: { get: ()=> config.font_size || defaultConfig.font_size, set: (value)=>{ config.font_size = value; window.elementSdk.setConfig({ font_size: value }); } }
+    };
+  }
+
+  function mapToEditPanelValues(config){
+    return new Map([
+      ['recipient_name', config.recipient_name || defaultConfig.recipient_name],
+      ['certificate_title', config.certificate_title || defaultConfig.certificate_title],
+      ['main_message', config.main_message || defaultConfig.main_message],
+      ['from_text', config.from_text || defaultConfig.from_text]
+    ]);
+  }
+
+  if(window.elementSdk){
+    window.elementSdk.init({ defaultConfig, onConfigChange, mapToCapabilities, mapToEditPanelValues });
+  }
+
+  setTimeout(initialExplosions, 500);
+  setTimeout(startConfettiRain, 2000);
+})();
   </script>
  </body>
 </html>
