@@ -325,15 +325,19 @@
     certificate.addEventListener('touchstart', (e) => {
       // Prevent page scrolling when touching the certificate
       e.preventDefault();
-      const touch = e.touches[0];
-      applyTilt(touch.clientX, touch.clientY);
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        applyTilt(touch.clientX, touch.clientY);
+      }
     }, { passive: false });
     
     certificate.addEventListener('touchmove', (e) => {
       // Prevent page scrolling when moving finger on the certificate
       e.preventDefault();
-      const touch = e.touches[0];
-      applyTilt(touch.clientX, touch.clientY);
+      if (e.touches.length > 0) {
+        const touch = e.touches[0];
+        applyTilt(touch.clientX, touch.clientY);
+      }
     }, { passive: false });
     
     certificate.addEventListener('touchend', (e) => {
